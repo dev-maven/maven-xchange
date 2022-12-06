@@ -1,0 +1,21 @@
+<nav class="navbar element-bg">
+  <div class="logo-container pointer" routerLink="/">
+    <img class="logo-image" src="assets/images/logo.png" alt="logo">
+  </div>
+  <ul class="nav-menu" [ngClass]="{'visible': showMenu}">
+    <li class="menu-item">
+      <span class="menu-link pointer" [routerLink]="['/usd/detail']" routerLinkActive="router-link-active">EUR-USD
+        Details</span>
+    </li>
+    <li class="menu-item">
+      <span class="menu-link pointer" [routerLink]="['/gbp/detail']" routerLinkActive="router-link-active">EUR-GBP
+        Details</span>
+    </li>
+  </ul>
+
+  <div class="menu-icon pointer" fxHide.gt-xs (click)="showMenu = !showMenu">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+</nav>
