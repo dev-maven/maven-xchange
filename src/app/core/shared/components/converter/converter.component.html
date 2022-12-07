@@ -1,5 +1,5 @@
 <div class="converter-container element-bg">
-  <form [formGroup]="converterForm" fxLayout="row wrap">
+  <form [formGroup]="converterForm" fxLayout="row wrap" (ngSubmit)="onConvert()">
     <div fxFlex="100" fxFlex.gt-xs="29">
       <label>Amount</label>
       <input type="number" formControlName="amount" />
@@ -7,9 +7,7 @@
     <div fxFlex="100" fxFlex.gt-xs="29">
       <label>From</label>
       <select formControlName="from">
-        <option value="A">A</option>
-        <option value="B">B</option>
-        <option value="C">Canada</option>
+        <option [value]=currency *ngFor="let currency of fromCurrencies">{{currency}}</option>
       </select>
     </div>
     <div fxFlex="100" fxFlex.gt-xs="13">
@@ -18,24 +16,27 @@
     <div fxFlex="100" fxFlex.gt-xs="29">
       <label>To</label>
       <select formControlName="to">
-        <option value="A">A</option>
-        <option value="B">B</option>
-        <option value="C">Canada</option>
+        <option [value]=currency *ngFor="let currency of toCurrencies">{{currency}}</option>
+
       </select>
     </div>
     <div fxFlex="100" fxFlex.gt-xs="29" fxHide.lt-sm></div>
     <div fxFlex="100" fxFlex.gt-xs="71">
-      <button>Convert</button>
+      <button class="pointer" type="submit" [disabled]="converterForm.invalid">Convert</button>
     </div>
-    <div fxFlex="100" fxFlex.gt-xs="33.3" fxLayoutAlign="center center">
-      <span class="panel rate">1.00 EUR = XX.XX USD</span>
+    <div fxFlex="100" [fxFlex.gt-xs]="showDetailButton ? 33.3 : 29" fxLayoutAlign="center center" class="panel-wrapper">
+      <span class="panel rate"> <span *ngIf="rate !== 'Unavailable'">1.00 {{converterForm.get('from')?.value}} =
+          {{rate}}
+          {{converterForm.get('to')?.value}}</span></span>
     </div>
-    <div fxFlex="100" fxFlex.gt-xs="33.3" fxLayoutAlign="center center">
-      <span class="panel result">XX.XX USD</span>
+    <div fxFlex="100" [fxFlex.gt-xs]="showDetailButton ? 33.3 : 71" fxLayoutAlign="center center" class="panel-wrapper">
+      <span class="panel result"><span *ngIf="converterForm.get('result')?.value">
+          {{converterForm.get('result')?.value}} {{converterForm.get('to')?.value}}
+        </span></span>
     </div>
-    <div fxFlex="100" fxFlex.gt-xs="31.8">
-      <button class="detail-button">More Details</button>
-
+    <div fxFlex="100" fxFlex.gt-xs="31.8" *ngIf="showDetailButton">
+      <button class="detail-button pointer" routerLink="/{{converterForm.get('to')?.value}}/detail">More
+        Details</button>
     </div>
 
   </form>

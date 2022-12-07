@@ -7,11 +7,13 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './core/shared/shared.module';
 import { PagesComponent } from './pages/pages.component';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent, PagesComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     SharedModule,
     RouterModule,

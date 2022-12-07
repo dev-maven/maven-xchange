@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
-import { MoviesService } from '../services/movies.service';
+import { DataService } from '../services/data.service';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,6 +24,6 @@ import { CurrencyCardComponent } from './components/currency-card/currency-card.
     FontAwesomeModule,
     CurrencyCardComponent,
   ],
-  providers: [MoviesService],
+  providers: [DataService],
 })
 export class SharedModule {}

@@ -6,7 +6,8 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./currency-card.component.scss'],
 })
 export class CurrencyCardComponent implements OnInit {
-  @Input() amount = '';
+  @Input() from = '';
+  @Input() to = '';
   constructor() {}
 
   ngOnInit() {}

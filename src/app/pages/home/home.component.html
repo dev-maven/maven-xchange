@@ -1,10 +1,12 @@
 <h2 class="page-title">Currency Exchanger</h2>
 <div class="container">
-  <app-converter></app-converter>
+  <app-converter [currencies]="supportedCurrencies" [currencyResult]="rateResult" [rate]="initRate.toString()"
+    (convertCurrency)="convert($event)" [showDetailButton]="true">
+  </app-converter>
 
-  <div fxLayout="row wrap" class="content-space">
-    <div fxFlex="100" fxFlex.gt-xs="33.3">
-      <app-currency-card [amount]="'100.00 USD'"></app-currency-card>
+  <div fxLayout="row wrap" class="content-space" fxLayoutGap="15px grid">
+    <div fxFlex="100" fxFlex.gt-xs="33.3" *ngFor="let item of cardObject | keyvalue">
+      <app-currency-card [from]="amount + ' ' + from" [to]="item.value + ' ' + item.key"></app-currency-card>
     </div>
   </div>
 

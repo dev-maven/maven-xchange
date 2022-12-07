@@ -30,7 +30,9 @@
 
   select {
     text-align-last: right;
-    background: #919191;
+    &:disabled {
+      background: #919191;
+    }
   }
 
   .switch-icon {
@@ -53,6 +55,11 @@
     border-radius: 5px;
     font-size: 15px;
     margin: 10px 0;
+    &:disabled {
+      background: rgba(239, 239, 239, 0.3);
+      color: #ccc;
+      cursor: not-allowed;
+    }
     @media only screen and (max-width: 600px) {
       width: 100%;
     }
@@ -63,6 +70,10 @@
       margin: 26px 10px;
       width: 92%;
     }
+  }
+
+  .panel-wrapper {
+    place-content: flex-start !important;
   }
 
   .panel {
@@ -78,5 +89,11 @@
   }
   .result {
     padding: 20px;
+    min-height: 61px;
+  }
+
+  .rate {
+    min-height: 41px;
+    width: 90%;
   }
 }
