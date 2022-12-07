@@ -1,1 +1,11 @@
 <h2 class="page-title">Currency Exchanger</h2>
+<div class="container">
+  <app-converter></app-converter>
+
+  <div fxLayout="row wrap" class="content-space">
+    <div fxFlex="100" fxFlex.gt-xs="33.3">
+      <app-currency-card [amount]="'100.00 USD'"></app-currency-card>
+    </div>
+  </div>
+
+</div>

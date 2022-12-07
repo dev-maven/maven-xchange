@@ -1,0 +1,82 @@
+.converter-container {
+  padding: 30px;
+  border-radius: 10px;
+  label,
+  input,
+  select {
+    display: flex;
+    flex-direction: column;
+    margin: 8px 0;
+    width: 90%;
+  }
+
+  input,
+  select {
+    padding: 12px 20px;
+    display: inline-block;
+    border: 2px solid #a09c9c;
+    border-radius: 5px;
+    box-sizing: border-box;
+    outline: none;
+    background: transparent;
+    color: #fff;
+    &[type="number"] {
+      text-align: center;
+    }
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+    }
+  }
+
+  select {
+    text-align-last: right;
+    background: #919191;
+  }
+
+  .switch-icon {
+    text-align: center;
+    display: block;
+    position: relative;
+    top: 38px;
+    left: -8px;
+    @media only screen and (max-width: 600px) {
+      top: 15px;
+      left: unset;
+    }
+  }
+  button {
+    width: 96%;
+    padding: 5px 5px 7px;
+    background: #0275d8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    margin: 10px 0;
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+    }
+  }
+
+  .detail-button {
+    @media only screen and (min-width: 601px) {
+      margin: 26px 10px;
+      width: 92%;
+    }
+  }
+
+  .panel {
+    border: 1px solid;
+    border-radius: 5px;
+    margin: 10px 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    @media only screen and (min-width: 601px) {
+      width: 96%;
+    }
+  }
+  .result {
+    padding: 20px;
+  }
+}

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/core/shared/shared.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 export const routes = [
   {
@@ -11,7 +12,12 @@ export const routes = [
   },
 ];
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(routes), SharedModule],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    SharedModule,
+    FlexLayoutModule,
+  ],
   declarations: [HomeComponent],
 })
 export class HomeModule {}

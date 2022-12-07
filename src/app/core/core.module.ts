@@ -10,21 +10,14 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { AppInterceptor } from './utils/app-interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    SharedModule,
-    NgxSpinnerModule,
-    FlexLayoutModule,
-  ],
+  imports: [CommonModule, HttpClientModule, SharedModule, NgxSpinnerModule],
   declarations: [],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true },
   ],
-  exports: [SharedModule, HttpClientModule, NgxSpinnerModule, FlexLayoutModule],
+  exports: [SharedModule, HttpClientModule, NgxSpinnerModule],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

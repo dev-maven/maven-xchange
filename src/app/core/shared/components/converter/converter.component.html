@@ -1,5 +1,42 @@
-<div class="converter-container">
-  <form>
+<div class="converter-container element-bg">
+  <form [formGroup]="converterForm" fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-xs="29">
+      <label>Amount</label>
+      <input type="number" formControlName="amount" />
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="29">
+      <label>From</label>
+      <select formControlName="from">
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">Canada</option>
+      </select>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="13">
+      <fa-icon [icon]="arrow" class="fa-3x switch-icon pointer" (click)="switchCurrency()"></fa-icon>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="29">
+      <label>To</label>
+      <select formControlName="to">
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">Canada</option>
+      </select>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="29" fxHide.lt-sm></div>
+    <div fxFlex="100" fxFlex.gt-xs="71">
+      <button>Convert</button>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="33.3" fxLayoutAlign="center center">
+      <span class="panel rate">1.00 EUR = XX.XX USD</span>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="33.3" fxLayoutAlign="center center">
+      <span class="panel result">XX.XX USD</span>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="31.8">
+      <button class="detail-button">More Details</button>
+
+    </div>
 
   </form>
 </div>

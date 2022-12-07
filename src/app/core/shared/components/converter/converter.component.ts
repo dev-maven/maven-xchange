@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { faArrowsLeftRight } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-converter',
@@ -7,8 +8,16 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['./converter.component.scss'],
 })
 export class ConverterComponent implements OnInit {
-  converterForm = this.fb.group({});
+  arrow = faArrowsLeftRight;
+  converterForm = this.fb.group({
+    amount: [''],
+    from: [''],
+    to: [''],
+    total: [''],
+  });
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {}
+
+  switchCurrency() {}
 }

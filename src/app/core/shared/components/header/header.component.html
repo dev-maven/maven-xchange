@@ -12,10 +12,8 @@
         Details</span>
     </li>
   </ul>
-
-  <div class="menu-icon pointer" fxHide.gt-xs (click)="showMenu = !showMenu">
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-  </div>
+  <fa-icon [icon]="hamburger" class="fa-2x pointer menu-icon" fxHide.gt-xs (click)="showMenu = !showMenu"
+    *ngIf="!showMenu"></fa-icon>
+  <fa-icon [icon]="close" class="fa-2x pointer menu-icon" fxHide.gt-xs (click)="showMenu = !showMenu" *ngIf="showMenu">
+  </fa-icon>
 </nav>
