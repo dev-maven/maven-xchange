@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ConversionForm } from '../../core/models/conversion-form';
 import { DataService } from '../../core/services/data.service';
-import { ConvertedCurrency } from '../../core/models/converted-currency';
+import { ConvertedCurrency } from '../../core/interfaces/converted-currency';
 import { CURRENCIES } from 'src/app/core/data/currencies';
 import { Router } from '@angular/router';
 
@@ -18,6 +17,7 @@ export class HomeComponent implements OnInit {
   from = '';
   to = '';
   amount = '';
+  result: any;
   constructor(private dataService: DataService, private router: Router) {}
 
   ngOnInit() {
@@ -36,9 +36,9 @@ export class HomeComponent implements OnInit {
       result: 0,
     };
 
-    this.dataService
-      .convertCurrency(initObject)
-      .subscribe((res) => (this.initRate = res.result));
+    this.dataService.convertCurrency(initObject).subscribe((res) => {
+      this.initRate = res.result;
+    });
   }
 
   openDetail() {
@@ -65,9 +65,9 @@ export class HomeComponent implements OnInit {
     this.from = formData.from;
     this.to = formData.to;
     this.amount = formData.amount;
-    this.dataService
-      .convertCurrency(formData)
-      .subscribe((res) => (this.rateResult = res));
+    this.dataService.convertCurrency(formData).subscribe((res) => {
+      this.rateResult = res;
+    });
 
     this.loadCardData();
   }

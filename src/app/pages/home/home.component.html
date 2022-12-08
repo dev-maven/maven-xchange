@@ -1,12 +1,13 @@
 <h2 class="page-title">Currency Exchanger</h2>
 <div class="container">
-  <app-converter [currencies]="supportedCurrencies" [currencyResult]="rateResult" [rate]="initRate.toString()"
+  <app-currency-converter [currencies]="supportedCurrencies" [currencyResult]="rateResult" [rate]="initRate.toString()"
     (convertCurrency)="convert($event)" [showDetailButton]="true" (navigateToDetail)="openDetail()">
-  </app-converter>
+  </app-currency-converter>
 
   <div fxLayout="row wrap" class="content-space" fxLayoutGap="15px grid">
     <div fxFlex="100" fxFlex.gt-xs="33.3" *ngFor="let item of cardObject | keyvalue">
-      <app-currency-card [from]="amount + ' ' + from" [to]="item.value + ' ' + item.key"></app-currency-card>
+      <app-currency-card *ngIf="from && item.value" [from]="amount + ' ' + from" [to]="item.value + ' ' + item.key">
+      </app-currency-card>
     </div>
   </div>
 

@@ -2,14 +2,14 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { faArrowsLeftRight } from '@fortawesome/free-solid-svg-icons';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
-import { ConvertedCurrency } from 'src/app/core/models/converted-currency';
+import { ConvertedCurrency } from 'src/app/core/interfaces/converted-currency';
 
 @Component({
-  selector: 'app-converter',
-  templateUrl: './converter.component.html',
-  styleUrls: ['./converter.component.scss'],
+  selector: 'app-currency-converter',
+  templateUrl: './currency-converter.component.html',
+  styleUrls: ['./currency-converter.component.scss'],
 })
-export class ConverterComponent implements OnInit {
+export class CurrencyConverterComponent implements OnInit {
   @Input() currencyResult: ConvertedCurrency;
   @Input() currencies: string[];
   @Input() showDetailButton = false;
@@ -27,9 +27,10 @@ export class ConverterComponent implements OnInit {
     to: [{ value: this.to ? this.to : 'USD', disabled: true }],
     result: [''],
   });
-  amountSub: Subscription | undefined;
-  fromSub: Subscription | undefined;
-  toSub: Subscription | undefined;
+  amountSub: Subscription;
+  fromSub: Subscription;
+  toSub: Subscription;
+  test = '';
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
@@ -55,7 +56,6 @@ export class ConverterComponent implements OnInit {
       setTimeout(() => (this.rate = currentRate), 500);
     }
     if (this.currencyResult?.success) {
-      this.patchFormControl('result', this.currencyResult?.result?.toString());
       this.patchFormControl(
         'from',
         this.currencyResult.query.from.toUpperCase()
@@ -67,10 +67,13 @@ export class ConverterComponent implements OnInit {
       );
       this.enableForm(this.converterForm.get('amount').value);
 
-      setTimeout(
-        () => (this.rate = this.currencyResult.info.quote.toString()),
-        500
-      );
+      setTimeout(() => {
+        this.rate = this.currencyResult.info.quote.toString();
+        this.patchFormControl(
+          'result',
+          this.currencyResult?.result?.toString()
+        );
+      }, 500);
     }
   }
 
@@ -87,11 +90,13 @@ export class ConverterComponent implements OnInit {
     this.converterForm.get('from').patchValue(to);
   }
   onConvert() {
+    this.test = 'worked';
     this.convertCurrency.emit(this.converterForm.value);
   }
 
   filterCurrency(value: string | null, category: string) {
     this.rate = 'Unavailable';
+    this.converterForm.get('result').patchValue('');
     if (category === 'from') {
       this.toCurrencies = this.currencies.filter((item) => item !== value);
     } else {

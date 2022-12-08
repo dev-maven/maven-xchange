@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CurrencyDetailComponent } from './currency-detail.component';
+import { DetailComponent } from './detail.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../core/shared/shared.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { NgApexchartsModule } from 'ng-apexcharts';
 
 export const routes = [
   {
     path: '',
-    component: CurrencyDetailComponent,
+    component: DetailComponent,
   },
 ];
 @NgModule({
@@ -18,8 +17,7 @@ export const routes = [
     RouterModule.forChild(routes),
     SharedModule,
     FlexLayoutModule,
-    NgApexchartsModule,
   ],
-  declarations: [CurrencyDetailComponent],
+  declarations: [DetailComponent],
 })
-export class CurrencyDetailModule {}
+export class DetailModule {}

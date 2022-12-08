@@ -7,11 +7,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #03324f;
 }
 
 .logo-image {
   display: block;
-  height: 48px;
+  height: 60px;
+  margin-left: 10px;
 }
 
 .nav-menu {

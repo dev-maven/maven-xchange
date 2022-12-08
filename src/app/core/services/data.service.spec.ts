@@ -1,117 +1,96 @@
-// /* tslint:disable:no-unused-variable */
+/* tslint:disable:no-unused-variable */
 
-// import { getTestBed, TestBed } from '@angular/core/testing';
-// import { MoviesService } from './data.service';
-// import {
-//   HttpClientTestingModule,
-//   HttpTestingController,
-// } from '@angular/common/http/testing';
-// import {
-//   NOWPLAYINGMOVIES,
-//   SEARCHEDMOVIES,
-//   TOPRATEDMOVIES,
-//   TRENDINGMOVIES,
-// } from '../test-data/movies';
+import { getTestBed, TestBed } from '@angular/core/testing';
+import { DataService } from './data.service';
+import { environment } from '../../../environments/environment';
+import {
+  TESTFORMDATA,
+  TESTCONVERSIONRESULT,
+  TESTCURRENCIESRESULT,
+  TESTHISTORICALDATA,
+} from '../data/test-data';
+import { CURRENCIES } from '../data/currencies';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 
-// describe('Service: MovieService', () => {
-//   let injector: TestBed;
-//   let httpMock: HttpTestingController;
-//   const baseUrl = 'https://api.themoviedb.org/3';
+describe('Service: DataService', () => {
+  let injector: TestBed;
+  let httpMock: HttpTestingController;
+  const baseUrl = environment.apiUrl;
 
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({
-//       imports: [HttpClientTestingModule],
-//       providers: [MoviesService],
-//     });
-//     injector = getTestBed();
-//     httpMock = injector.get(HttpTestingController);
-//   });
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [DataService],
+    });
+    injector = getTestBed();
+    httpMock = injector.inject(HttpTestingController);
+  });
 
-//   afterEach(() => {
-//     httpMock.verify();
-//   });
+  afterEach(() => {
+    httpMock.verify();
+  });
 
-//   it('should retrieve now playing movies ', () => {
-//     const service: MoviesService = TestBed.get(MoviesService);
-//     let movies: any;
-//     service.getNowPlayingMovies().subscribe((res) => (movies = res));
+  it('should retrieve converted currency result', () => {
+    const service: DataService = TestBed.inject(DataService);
+    let result: any;
+    let formData = TESTFORMDATA;
+    service.convertCurrency(formData).subscribe((res) => (result = res));
 
-//     const req = httpMock.expectOne(`${baseUrl}/movie/now_playing`);
+    const req = httpMock.expectOne(
+      `${baseUrl}currency_data/convert?to=${formData.to}&from=${formData.from}&amount=${formData.amount}`
+    );
 
-//     expect(req.request.method).toEqual('GET');
-//     req.flush(NOWPLAYINGMOVIES);
+    expect(req.request.method).toEqual('GET');
+    req.flush(TESTCONVERSIONRESULT);
+    expect(result).toBeTruthy();
+    expect(result).toEqual(TESTCONVERSIONRESULT);
+    expect(result.result).toBe(52.6975);
+    expect(result.success).toBeTruthy();
+  });
 
-//     expect(movies).toBeTruthy();
-//     expect(movies).toEqual(NOWPLAYINGMOVIES);
-//     expect(movies.results.length).toBe(20);
-//     const movie = movies.results.find((movie: any) => movie.id == 436270);
-//     expect(movie?.title).toBe('Black Adam');
-//   });
+  it('should retrieve 9 converted currencies result', () => {
+    const service: DataService = TestBed.inject(DataService);
+    let result: any;
+    let source = 'EUR';
+    let currencies = CURRENCIES;
+    service
+      .convertCurrencies(source, currencies)
+      .subscribe((res) => (result = res));
 
-//   it('should retrieve trending movies ', () => {
-//     const service: MoviesService = TestBed.get(MoviesService);
-//     let movies: any;
-//     service.getTrendingMovies().subscribe((res) => (movies = res));
+    const req = httpMock.expectOne(
+      `${baseUrl}currency_data/live?source=${source}&currencies=${currencies.toString()}`
+    );
 
-//     const req = httpMock.expectOne(`${baseUrl}/movie/popular`);
+    expect(req.request.method).toEqual('GET');
+    req.flush(TESTCURRENCIESRESULT);
+    expect(result).toBeTruthy();
+    expect(result).toEqual(TESTCURRENCIESRESULT);
+    expect(Object.keys(result.quotes).length).toBe(9);
+    expect(result.success).toBeTruthy();
+  });
 
-//     expect(req.request.method).toEqual('GET');
-//     req.flush(TRENDINGMOVIES);
+  it('should retrieve historical result for supplied date', () => {
+    const service: DataService = TestBed.inject(DataService);
+    let result: any;
+    let today = '2022-12-01',
+      source = 'EUR',
+      currencies = 'USD';
+    service
+      .history(source, currencies, today)
+      .subscribe((res) => (result = res));
 
-//     expect(movies).toBeTruthy();
-//     expect(movies).toEqual(TRENDINGMOVIES);
-//     expect(movies.results.length).toBe(20);
-//     const movie = movies.results.find((movie: any) => movie.id == 966220);
-//     expect(movie?.title).toBe('Sniper: The White Raven');
-//   });
+    const req = httpMock.expectOne(
+      `${baseUrl}currency_data/historical?source=${source}&currencies=${currencies}&date=${today}`
+    );
 
-//   it('should retrieve top rated movies ', () => {
-//     const service: MoviesService = TestBed.get(MoviesService);
-//     let movies: any;
-//     service.getTopRatedMovies().subscribe((res) => (movies = res));
-
-//     const req = httpMock.expectOne(`${baseUrl}/movie/top_rated`);
-
-//     expect(req.request.method).toEqual('GET');
-//     req.flush(TOPRATEDMOVIES);
-
-//     expect(movies).toBeTruthy();
-//     expect(movies).toEqual(TOPRATEDMOVIES);
-//     expect(movies.results.length).toBe(20);
-//     const movie = movies.results.find((movie: any) => movie.id == 278);
-//     expect(movie?.title).toBe('The Shawshank Redemption');
-//   });
-
-//   it('should retrieve movie by id ', () => {
-//     const service: MoviesService = TestBed.get(MoviesService);
-//     let movie: any;
-//     service.getMovieDetail('436270').subscribe((res) => (movie = res));
-
-//     const req = httpMock.expectOne(`${baseUrl}/movie/436270`);
-
-//     expect(req.request.method).toEqual('GET');
-//     req.flush(NOWPLAYINGMOVIES.results[0]);
-
-//     expect(movie).toBeTruthy();
-//     expect(movie).toEqual(NOWPLAYINGMOVIES.results[0]);
-//     expect(movie.title).toBe('Black Adam');
-//     expect(movie.id).toBe(436270);
-//   });
-
-//   it('should retrieve movies matching Black query', () => {
-//     const service: MoviesService = TestBed.get(MoviesService);
-//     let movies: any;
-//     service.searchMovies('black').subscribe((res) => (movies = res));
-
-//     const req = httpMock.expectOne(`${baseUrl}/search/movie?query=black`);
-
-//     expect(req.request.method).toEqual('GET');
-//     req.flush(SEARCHEDMOVIES);
-
-//     expect(movies).toBeTruthy();
-//     expect(movies).toEqual(SEARCHEDMOVIES);
-//     expect(movies.results.length).toBe(20);
-//     const movie = movies.results.find((movie: any) => movie.id == 505642);
-//     expect(movie?.title).toBe('Black Panther: Wakanda Forever');
-//   });
-// });
+    expect(req.request.method).toEqual('GET');
+    req.flush(TESTHISTORICALDATA);
+    expect(result).toBeTruthy();
+    expect(result).toEqual(TESTHISTORICALDATA);
+    expect(result.date).toEqual(today);
+    expect(result.success).toBeTruthy();
+  });
+});

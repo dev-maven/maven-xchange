@@ -15,9 +15,7 @@ const routes: Routes = [
       {
         path: ':from/:to/detail',
         loadChildren: () =>
-          import('./pages/currency-detail/currency-detail.module').then(
-            (m) => m.CurrencyDetailModule
-          ),
+          import('./pages/detail/detail.module').then((m) => m.DetailModule),
       },
     ],
   },

@@ -11,7 +11,8 @@
       </select>
     </div>
     <div fxFlex="100" fxFlex.gt-xs="13">
-      <fa-icon [icon]="arrow" class="fa-3x switch-icon pointer" (click)="switchCurrency()"></fa-icon>
+      <fa-icon [icon]="arrow" class="fa-3x switch-icon pointer" (click)="switchCurrency()"
+        [tooltip]="'Switch Currency'"></fa-icon>
     </div>
     <div fxFlex="100" fxFlex.gt-xs="29">
       <label>To</label>
@@ -22,7 +23,7 @@
     </div>
     <div fxFlex="100" fxFlex.gt-xs="29" fxHide.lt-sm></div>
     <div fxFlex="100" fxFlex.gt-xs="71">
-      <button class="pointer" type="submit" [disabled]="converterForm.invalid">Convert</button>
+      <button class="pointer submit-button" type="submit" [disabled]="converterForm.invalid">Convert</button>
     </div>
     <div fxFlex="100" [fxFlex.gt-xs]="showDetailButton ? 33.3 : 29" fxLayoutAlign="center center" class="panel-wrapper">
       <span class="panel rate"> <span *ngIf="rate !== 'Unavailable'">1.00 {{converterForm.get('from').value}} =

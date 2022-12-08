@@ -1,50 +1,26 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CURRENCIES } from 'src/app/core/data/currencies';
-import { ConvertedCurrency } from 'src/app/core/models/converted-currency';
+import { ConvertedCurrency } from 'src/app/core/interfaces/converted-currency';
 import { DataService } from 'src/app/core/services/data.service';
-import { ConversionForm } from '../../core/models/conversion-form';
-
+import { ConversionForm } from '../../core/interfaces/conversion-form';
 import * as m from 'moment';
-import { ChartData } from '../../core/data/chart-data';
-import {
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexXAxis,
-  ApexDataLabels,
-  ApexGrid,
-  ApexStroke,
-  ApexTitleSubtitle,
-  ChartComponent,
-  ApexTheme,
-  ApexMarkers,
-} from 'ng-apexcharts';
-
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  dataLabels: ApexDataLabels;
-  grid: ApexGrid;
-  stroke: ApexStroke;
-  title: ApexTitleSubtitle;
-  theme: ApexTheme;
-};
+import { ChartData } from '../../core/interfaces/chart-data';
 
 @Component({
-  selector: 'app-currency-detail',
-  templateUrl: './currency-detail.component.html',
-  styleUrls: ['./currency-detail.component.scss'],
+  selector: 'app-detail',
+  templateUrl: './detail.component.html',
+  styleUrls: ['./detail.component.scss'],
 })
-export class CurrencyDetailComponent implements OnInit {
-  @ViewChild('chart') chart: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
+export class DetailComponent implements OnInit {
   rateResult: ConvertedCurrency;
   supportedCurrencies = CURRENCIES;
   initRate = 0;
   chartArray: ChartData[] = [];
   defaultObject: ConversionForm;
   chartDates: string[] = [];
+  labels: string[] = [];
+  chartData: number[] = [];
   from = '';
   to = '';
 
@@ -82,93 +58,46 @@ export class CurrencyDetailComponent implements OnInit {
   }
 
   loadChartData() {
+    this.chartArray = [];
+
     this.chartDates = this.getDates();
     this.chartDates.forEach((date) => {
       this.dataService.history(this.from, this.to, date).subscribe((res) => {
-        const key = this.from.toUpperCase() + this.to.toUpperCase();
-        const obj = {
-          month: m(date).format('MMM'),
-          year: m(date).format('YYYY'),
-          rate: res.quotes[key],
-        };
-        this.chartArray.push(obj);
-        const allMonths = [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec',
-        ];
-        this.chartArray.sort(function (a, b) {
-          return allMonths.indexOf(a.month) - allMonths.indexOf(b.month);
-        });
-        this.chartArray.sort(function (a, b) {
-          return +a.year - +b.year;
-        });
-
-        const dataset = this.chartArray.map((item) => item.rate);
-
-        const chartLabel = this.chartArray.map(
-          (item) => item.month + "  ' " + item.year.substring(2)
-        );
-
-        this.plotChart(chartLabel, dataset);
+        if (res) {
+          const key = this.from.toUpperCase() + this.to.toUpperCase();
+          const obj = {
+            month: m(date).format('MMM'),
+            year: m(date).format('YYYY'),
+            rate: res.quotes[key],
+          };
+          this.chartArray.push(obj);
+          const allMonths = [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec',
+          ];
+          this.chartArray.sort(function (a, b) {
+            return allMonths.indexOf(a.month) - allMonths.indexOf(b.month);
+          });
+          this.chartArray.sort(function (a, b) {
+            return +a.year - +b.year;
+          });
+          this.chartData = this.chartArray.map((item) => item.rate);
+          this.labels = this.chartArray.map(
+            (item) => item.month + " '" + item.year.substring(2)
+          );
+        }
       });
     });
-  }
-
-  plotChart(chartLabel: string[], dataset: number[]) {
-    this.chartOptions = {
-      series: [
-        {
-          name: 'Exchange Rate',
-          data: dataset,
-        },
-      ],
-      chart: {
-        height: 350,
-        type: 'line',
-        zoom: {
-          enabled: false,
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      theme: {
-        mode: 'dark',
-        palette: 'palette1',
-        monochrome: {
-          enabled: false,
-          color: '#0275d8',
-          shadeTo: 'light',
-          shadeIntensity: 0.65,
-        },
-      },
-      stroke: {
-        curve: 'straight',
-      },
-      title: {
-        text: 'Historical Rates Chart',
-        align: 'left',
-      },
-      grid: {
-        row: {
-          colors: ['#4b4a49', 'transparent'],
-          opacity: 0.5,
-        },
-      },
-      xaxis: {
-        categories: chartLabel,
-      },
-    };
   }
 
   getDates(): string[] {
