@@ -18,16 +18,16 @@ describe('CurrencyCardComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CurrencyCardComponent],
-    }).compileComponents();
+    })
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(CurrencyCardComponent);
+        component = fixture.componentInstance;
+        component.from = '50';
+        component.to = '52.79665';
+        fixture.detectChanges();
+      });
   }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CurrencyCardComponent);
-    component = fixture.componentInstance;
-    component.from = '50';
-    component.to = '52.79665';
-    fixture.detectChanges();
-  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

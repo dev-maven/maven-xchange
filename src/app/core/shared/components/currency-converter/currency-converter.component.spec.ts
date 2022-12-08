@@ -21,32 +21,31 @@ describe('CurrencyConverterComponent', () => {
   let component: CurrencyConverterComponent;
   let fixture: ComponentFixture<CurrencyConverterComponent>;
   let form: FormGroup;
-  let el: DebugElement;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, FlexLayoutModule],
       declarations: [CurrencyConverterComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+    })
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(CurrencyConverterComponent);
+        component = fixture.componentInstance;
+        component.currencies = CURRENCIES;
+        form = component.converterForm;
+        fixture.detectChanges();
+        form.get('amount').patchValue('50');
+      });
   }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CurrencyConverterComponent);
-    component = fixture.componentInstance;
-    component.currencies = CURRENCIES;
-    el = fixture.debugElement;
-    form = component.converterForm;
-    fixture.detectChanges();
-    form.get('amount').patchValue('50');
-  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('should disable other fields if amount is invalid', () => {
-    form.get('amount').patchValue(null);
+    form.get('amount').patchValue('');
+    component.enableForm(form.get('amount').value);
     fixture.detectChanges();
     expect(form.get('from').status).toBe('DISABLED');
     expect(form.get('to').status).toBe('DISABLED');

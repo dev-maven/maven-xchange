@@ -18,15 +18,15 @@ describe('CurrencyChartComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CurrencyChartComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+    })
+      .compileComponents()
+      .then(() => {
+        fixture = TestBed.createComponent(CurrencyChartComponent);
+        component = fixture.componentInstance;
+        component.chartOptions = {};
+        fixture.detectChanges();
+      });
   }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CurrencyChartComponent);
-    component = fixture.componentInstance;
-    component.chartOptions = {};
-    fixture.detectChanges();
-  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

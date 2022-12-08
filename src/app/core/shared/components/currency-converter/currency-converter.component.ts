@@ -30,7 +30,6 @@ export class CurrencyConverterComponent implements OnInit {
   amountSub: Subscription;
   fromSub: Subscription;
   toSub: Subscription;
-  test = '';
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
@@ -90,7 +89,6 @@ export class CurrencyConverterComponent implements OnInit {
     this.converterForm.get('from').patchValue(to);
   }
   onConvert() {
-    this.test = 'worked';
     this.convertCurrency.emit(this.converterForm.value);
   }
 
@@ -110,8 +108,11 @@ export class CurrencyConverterComponent implements OnInit {
 
   enableForm(amount: string | null) {
     if (amount) {
-      this.converterForm.get('from')?.enable();
-      this.converterForm.get('to')?.enable();
+      this.converterForm.get('from').enable();
+      this.converterForm.get('to').enable();
+    } else {
+      this.converterForm.get('from').disable();
+      this.converterForm.get('to').disable();
     }
   }
 

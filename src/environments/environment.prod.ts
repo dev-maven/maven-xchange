@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiKey: 'nPWbK74YKjWhqjRiCLRwETZhzN0D7D4W',
+  apiKey: 'Ijw0C0840JzVn0rkH5Kc3pmXCHz5vcwy',
   apiUrl: 'https://api.apilayer.com/',
 };
