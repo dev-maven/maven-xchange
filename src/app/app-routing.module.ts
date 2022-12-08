@@ -13,7 +13,7 @@ const routes: Routes = [
           import('./pages/home/home.module').then((m) => m.HomeModule),
       },
       {
-        path: ':name/detail',
+        path: ':from/:to/detail',
         loadChildren: () =>
           import('./pages/currency-detail/currency-detail.module').then(
             (m) => m.CurrencyDetailModule

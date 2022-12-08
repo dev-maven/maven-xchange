@@ -25,17 +25,18 @@
       <button class="pointer" type="submit" [disabled]="converterForm.invalid">Convert</button>
     </div>
     <div fxFlex="100" [fxFlex.gt-xs]="showDetailButton ? 33.3 : 29" fxLayoutAlign="center center" class="panel-wrapper">
-      <span class="panel rate"> <span *ngIf="rate !== 'Unavailable'">1.00 {{converterForm.get('from')?.value}} =
+      <span class="panel rate"> <span *ngIf="rate !== 'Unavailable'">1.00 {{converterForm.get('from').value}} =
           {{rate}}
-          {{converterForm.get('to')?.value}}</span></span>
+          {{converterForm.get('to').value}}</span></span>
     </div>
     <div fxFlex="100" [fxFlex.gt-xs]="showDetailButton ? 33.3 : 71" fxLayoutAlign="center center" class="panel-wrapper">
       <span class="panel result"><span *ngIf="converterForm.get('result')?.value">
-          {{converterForm.get('result')?.value}} {{converterForm.get('to')?.value}}
+          {{converterForm.get('result').value}} {{converterForm.get('to').value}}
         </span></span>
     </div>
     <div fxFlex="100" fxFlex.gt-xs="31.8" *ngIf="showDetailButton">
-      <button class="detail-button pointer" routerLink="/{{converterForm.get('to')?.value}}/detail">More
+      <button type="button" class="detail-button pointer" (click)="onNavigate()"
+        [disabled]="!converterForm.get('result').value">More
         Details</button>
     </div>
 

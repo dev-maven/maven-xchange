@@ -24,8 +24,10 @@ export class DataService {
     );
   }
 
-  getTrendingMovies(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/movie/popular`);
+  history(source: string, currencies: string, date: string): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrl}currency_data/historical?source=${source}&currencies=${currencies}&date=${date}`
+    );
   }
 
   getTopRatedMovies(): Observable<any> {

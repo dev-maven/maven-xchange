@@ -1,3 +1,28 @@
-<p>
-  currency-detail works!
-</p>
+<div fxLayout="row wrap" fxLayoutAlign="space-between">
+  <div fxFlex="100" fxFlex.gt-xs="75">
+    <h2 class="page-title">{{from}} - {{to}} Details</h2>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="25">
+    <button class="pointer" (click)="goHome()">Back to Home</button>
+  </div>
+</div>
+
+<div class="container">
+  <div fxLayout="row wrap">
+    <div fxFlex="100">
+      <app-converter [currencies]="supportedCurrencies" [rate]="initRate.toString()" [currencyResult]="rateResult"
+        (convertCurrency)="convert($event)" [showDetailButton]="false" [from]="from" [to]="to">
+      </app-converter>
+    </div>
+  </div>
+
+  <div fxLayout="row wrap" *ngIf="chartOptions">
+    <div fxFlex="100" class="element-bg content-space">
+      <div id="chart">
+        <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
+          [dataLabels]="chartOptions.dataLabels" [grid]="chartOptions.grid" [stroke]="chartOptions.stroke"
+          [title]="chartOptions.title" [theme]="chartOptions.theme"></apx-chart>
+      </div>
+    </div>
+  </div>
+</div>

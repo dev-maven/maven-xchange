@@ -1,7 +1,7 @@
 <h2 class="page-title">Currency Exchanger</h2>
 <div class="container">
   <app-converter [currencies]="supportedCurrencies" [currencyResult]="rateResult" [rate]="initRate.toString()"
-    (convertCurrency)="convert($event)" [showDetailButton]="true">
+    (convertCurrency)="convert($event)" [showDetailButton]="true" (navigateToDetail)="openDetail()">
   </app-converter>
 
   <div fxLayout="row wrap" class="content-space" fxLayoutGap="15px grid">

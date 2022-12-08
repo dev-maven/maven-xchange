@@ -3,6 +3,7 @@ import { ConversionForm } from '../../core/models/conversion-form';
 import { DataService } from '../../core/services/data.service';
 import { ConvertedCurrency } from '../../core/models/converted-currency';
 import { CURRENCIES } from 'src/app/core/data/currencies';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -15,10 +16,19 @@ export class HomeComponent implements OnInit {
   supportedCurrencies = CURRENCIES;
   cardObject = {};
   from = '';
+  to = '';
   amount = '';
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService, private router: Router) {}
 
   ngOnInit() {
+    const routeData = history.state;
+    if (routeData) this.rateResult = routeData['currencyResult'];
+    if (this.rateResult) {
+      this.from = this.rateResult.query.from;
+      this.to = this.rateResult.query.to;
+      this.amount = this.rateResult.query.amount.toString();
+      this.loadCardData();
+    }
     const initObject = {
       from: 'EUR',
       to: 'USD',
@@ -31,12 +41,13 @@ export class HomeComponent implements OnInit {
       .subscribe((res) => (this.initRate = res.result));
   }
 
-  convert(formData: any) {
-    this.from = formData.from;
-    this.amount = formData.amount;
-    this.dataService
-      .convertCurrency(formData)
-      .subscribe((res) => (this.rateResult = res));
+  openDetail() {
+    this.router.navigateByUrl(`/${this.from}/${this.to}/detail`, {
+      state: { currencyResult: this.rateResult },
+    });
+  }
+
+  loadCardData() {
     this.dataService
       .convertCurrencies(this.from, this.supportedCurrencies)
       .subscribe((res) => {
@@ -44,9 +55,20 @@ export class HomeComponent implements OnInit {
           let newKey = key.substring(3);
           this.cardObject = {
             ...this.cardObject,
-            [newKey]: res.quotes[key] * formData.amount,
+            [newKey]: res.quotes[key] * +this.amount,
           };
         }
       });
+  }
+
+  convert(formData: any) {
+    this.from = formData.from;
+    this.to = formData.to;
+    this.amount = formData.amount;
+    this.dataService
+      .convertCurrency(formData)
+      .subscribe((res) => (this.rateResult = res));
+
+    this.loadCardData();
   }
 }

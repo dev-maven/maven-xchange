@@ -13,15 +13,18 @@ export class ConverterComponent implements OnInit {
   @Input() currencyResult: ConvertedCurrency;
   @Input() currencies: string[];
   @Input() showDetailButton = false;
+  @Input() from = '';
+  @Input() to = '';
   @Input() rate = 'Unavailable';
   @Output() convertCurrency = new EventEmitter<any>();
+  @Output() navigateToDetail = new EventEmitter<any>();
   fromCurrencies: string[];
   toCurrencies: string[];
   arrow = faArrowsLeftRight;
   converterForm = this.fb.group({
     amount: ['', Validators.required],
-    from: [{ value: 'EUR', disabled: true }],
-    to: [{ value: 'USD', disabled: true }],
+    from: [{ value: this.from ? this.from : 'EUR', disabled: true }],
+    to: [{ value: this.to ? this.to : 'USD', disabled: true }],
     result: [''],
   });
   amountSub: Subscription | undefined;
@@ -45,21 +48,43 @@ export class ConverterComponent implements OnInit {
   }
 
   ngOnChanges() {
-    if (this.currencyResult) {
-      this.converterForm
-        .get('result')
-        ?.patchValue(this.currencyResult.result.toString());
-      this.rate = this.currencyResult.info.quote.toString();
+    if (this.from && this.to) {
+      const currentRate = this.rate;
+      this.patchFormControl('from', this.from);
+      this.patchFormControl('to', this.to);
+      setTimeout(() => (this.rate = currentRate), 500);
+    }
+    if (this.currencyResult?.success) {
+      this.patchFormControl('result', this.currencyResult?.result?.toString());
+      this.patchFormControl(
+        'from',
+        this.currencyResult.query.from.toUpperCase()
+      );
+      this.patchFormControl('to', this.currencyResult.query.to.toUpperCase());
+      this.patchFormControl(
+        'amount',
+        this.currencyResult.query.amount.toString()
+      );
+      this.enableForm(this.converterForm.get('amount').value);
+
+      setTimeout(
+        () => (this.rate = this.currencyResult.info.quote.toString()),
+        500
+      );
     }
   }
 
+  patchFormControl(field: string, value: string) {
+    this.converterForm.get(field)?.patchValue(value);
+  }
+
   switchCurrency() {
-    const to = this.converterForm.get('to')?.value;
-    const from = this.converterForm.get('from')?.value;
+    const to = this.converterForm.get('to').value;
+    const from = this.converterForm.get('from').value;
     this.rate = 'Unavailable';
-    this.converterForm.get('result')?.patchValue('');
-    this.converterForm.get('to')?.patchValue(from ? from : '');
-    this.converterForm.get('from')?.patchValue(to ? to : '');
+    this.converterForm.get('result').patchValue('');
+    this.converterForm.get('to').patchValue(from);
+    this.converterForm.get('from').patchValue(to);
   }
   onConvert() {
     this.convertCurrency.emit(this.converterForm.value);
@@ -72,6 +97,10 @@ export class ConverterComponent implements OnInit {
     } else {
       this.fromCurrencies = this.currencies.filter((item) => item !== value);
     }
+  }
+
+  onNavigate() {
+    this.navigateToDetail.emit();
   }
 
   enableForm(amount: string | null) {
