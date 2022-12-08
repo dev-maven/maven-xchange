@@ -48,9 +48,11 @@ export class HomeComponent implements OnInit {
   }
 
   loadCardData() {
+    const currencies = CURRENCIES.filter((item) => item !== this.from);
     this.dataService
-      .convertCurrencies(this.from, this.supportedCurrencies)
+      .convertCurrencies(this.from, currencies)
       .subscribe((res) => {
+        this.cardObject = {};
         for (const key in res.quotes) {
           let newKey = key.substring(3);
           this.cardObject = {
